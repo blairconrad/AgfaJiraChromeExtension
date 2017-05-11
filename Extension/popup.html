@@ -1,0 +1,58 @@
+<html>
+  <head>
+    <script src="popup.js"></script>
+    <style type="text/css">
+          body {
+              background-color: #205081;
+              font-family: Arial, sans-serif;
+              font-size: 16px;
+              color: white;
+          }
+
+          ul {
+              list-style-type: none;
+              margin-left: -40px;
+              margin-top: 0px;
+              margin-bottom: 0px;
+          }
+
+          li {
+              white-space: nowrap;
+              padding-top: 3px;
+              padding-bottom: 2px;
+              padding-left: 26px;
+              padding-right: 2px;
+              vertical-align: middle;
+              cursor: pointer;
+          }
+
+          li:hover {
+              background-color: #296CA3;
+          }
+
+          .action_url {
+              background: url('url16.png') no-repeat 5px 3px transparent;
+          }
+
+          .action_title {
+              background: url('title16.png') no-repeat 5px 3px transparent;
+          }
+
+          .action_email {
+              background: url('email16.png') no-repeat 5px 3px transparent;
+          }
+
+          textarea {
+              display: none;
+          }
+    </style>
+  </head>
+  <body>
+    <ul class="actions">
+      <li class="action_email" id="email_item">E-mail issue</li>
+      <li class="action_title" id="title_item">Copy title</li>
+      <li class="action_url" id="url_item">Copy link as markdown</li>
+    </ul>
+    <textarea id="ta"/>
+    </body>
+</html>
