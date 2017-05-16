@@ -1,14 +1,4 @@
 function onWindowLoad() {
-
-  function copyToClipboard(text) {
-    var ta = document.getElementById('ta');
-    ta.style.display = 'block';
-    ta.value = text;
-    ta.select();
-    document.execCommand('copy');
-    ta.style.display = 'none';
-  }
-
   chrome.tabs.executeScript(null, { file: "content_script.js" }, function() {
     // If you try and inject into an extensions page or the webstore/NTP you'll get an error
     if (chrome.runtime.lastError) {
@@ -32,13 +22,13 @@ function onWindowLoad() {
 
       var titleItem = document.getElementById('title_item');
       titleItem.onclick = function(event) {
-        copyToClipboard(response.issueNumber + ' - ' + response.title);
+        snagTitle(response);
         window.close();
       }
 
       var urlItem = document.getElementById('url_item');
       urlItem.onclick = function(event) {
-        copyToClipboard('[' + response.issueNumber + ' - ' + response.title + '](http://jiraprod.agfahealthcare.com/browse/' + response.issueNumber + ')');
+        snagLink(response);
         window.close();
       }
 

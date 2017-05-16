@@ -14,7 +14,7 @@
   },
 
   "background": {
-    "scripts": ["background.js"],
+    "page": "background.html",
     "persistent": false
   },
 
@@ -24,6 +24,27 @@
     },
     "default_title": "AGFA JIRA",
     "default_popup": "popup.html"
+  },
+
+  "commands": {
+    "copy-title": {
+      "suggested_key": {
+        "default": "Alt+T"
+      },
+      "description": "Copy title"
+    },
+    "copy-link": {
+      "suggested_key": {
+        "default": "Alt+L"
+      },
+      "description": "Copy link as markdown"
+    },
+    "send-email": {
+      "suggested_key": {
+        "default": "Alt+S"
+      },
+      "description": "Email issue"
+    }
   },
 
   "permissions": [
