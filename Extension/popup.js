@@ -1,11 +1,4 @@
 function onWindowLoad() {
-  chrome.tabs.executeScript(null, { file: "content_script.js" }, function() {
-    // If you try and inject into an extensions page or the webstore/NTP you'll get an error
-    if (chrome.runtime.lastError) {
-      alert('There was an error injecting script: \n' + chrome.runtime.lastError.message);
-    }
-  });
-
   function showKeybinding(command) {
     if (command.shortcut) {
       document.getElementById(command.name).innerHTML += ' (' + command.shortcut + ')';

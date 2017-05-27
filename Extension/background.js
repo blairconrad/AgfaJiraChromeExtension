@@ -43,13 +43,6 @@ chrome.runtime.onInstalled.addListener(function() {
 });
 
 chrome.commands.onCommand.addListener(function(command) {
-  chrome.tabs.executeScript(null, { file: "content_script.js" }, function() {
-    // If you try and inject into an extensions page or the webstore/NTP you'll get an error
-    if (chrome.runtime.lastError) {
-      alert('There was an error injecting script: \n' + chrome.runtime.lastError.message);
-    }
-  });
-
   chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
     var tabId=tabs[0].id;
     chrome.tabs.sendMessage(tabId, {action: 'get page details'}, function(response) {

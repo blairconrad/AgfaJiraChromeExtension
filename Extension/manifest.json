@@ -26,6 +26,13 @@
     "default_popup": "popup.html"
   },
 
+  "content_scripts": [
+    {
+      "matches": ["*://jiraprod.agfahealthcare.com/*"],
+      "js": ["content_script.js"]
+    }
+  ],
+
   "commands": {
     "copy-title": {
       "suggested_key": {
