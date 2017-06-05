@@ -41,3 +41,7 @@ li:hover {
 textarea {
     display: none;
 }
+
+form {
+    margin-bottom: 1em;
+}

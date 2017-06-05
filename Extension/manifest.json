@@ -7,6 +7,11 @@
 
   "homepage_url": "https://github.com/blairconrad/notions/tree/master/ChromeExtensions/AgfaJira",
 
+"options_ui": {
+    "page": "options.html",
+    "chrome_style": true
+  },
+
   "icons": {
     "16": "icon16.png",
     "48": "icon48.png",
@@ -57,6 +62,7 @@
   "permissions": [
     "activeTab",
     "clipboardWrite",
-    "declarativeContent"
+    "declarativeContent",
+    "storage"
   ]
 }
