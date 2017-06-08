@@ -5,7 +5,7 @@
 
   "description" : "Adds custom actions to JIRA issue pages",
 
-  "homepage_url": "https://github.com/blairconrad/notions/tree/master/ChromeExtensions/AgfaJira",
+  "homepage_url": "https://github.com/blairconrad/AgfaJiraChromeExtension",
 
 "options_ui": {
     "page": "options.html",
