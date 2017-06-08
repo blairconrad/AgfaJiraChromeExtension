@@ -1,5 +1,8 @@
-Agfa Jira is a Google Chrome extension that adds handy actions to a
-Jira issue page.  You can access the actions via the extension icon,
+Agfa Jira is a Google Chrome extension that augments Jira issue pages. 
+
+## Actions
+
+You can access several actions via the extension icon,
 or by using keyboard shortcuts.  The default shortcuts are listed
 below:
 
@@ -10,5 +13,14 @@ below:
 You can always choose your own shortcuts at the bottom of the Chrome
 Extensions page.
 
-It's tied to the Jira server at Agfa Healthcare, so won't work on
+## Comment-sorting
+
+Jira's issue comment-sorting is globally configured on the server, not
+on a per-user basis. The extension allows you to set a preferred sort
+order (oldest first or newest first) that will be used whenever you
+login. Set your preferred order in the extension's options, accessible
+on the Chrome Extensions page or by right-clicking the extension's icon.
+
+----
+The extension is tied to the Jira server at Agfa Healthcare, so won't work on
 other Jira instances.
