@@ -1,10 +1,10 @@
 chrome.runtime.onMessage.addListener(
-  function(request, sender, sendResponse) {
+  function (request, sender, sendResponse) {
     var issueNumber = document.getElementById('key-val').textContent;
     var issueTitle = document.getElementById('summary-val').textContent;
 
     if (request.action == 'get page details') {
-      sendResponse({title: issueTitle, issueNumber: issueNumber});
+      sendResponse({ title: issueTitle, issueNumber: issueNumber });
     }
 
     if (request.action == 'send e-mail') {
@@ -13,9 +13,9 @@ chrome.runtime.onMessage.addListener(
 
       // If we return right away, the window doesn't have time to start the mailto.
       // Half a second should be enough time.
-      setTimeout(function() {}, 500);
+      setTimeout(function () { }, 500);
     }
-});
+  });
 
 function setIssueActivitySortDirection(direction) {
   var sortLink = document.getElementsByClassName('issue-activity-sort-link')[0];
@@ -32,13 +32,13 @@ function setIssueActivitySortDirection(direction) {
     }
   }
 
-  setTimeout(function() { setIssueActivitySortDirection(direction); }, 100);
+  setTimeout(function () { setIssueActivitySortDirection(direction); }, 100);
 }
 
 chrome.storage.sync.get({
   commentSorting: 'no-sort'
-  },
-  function(items) {
+},
+  function (items) {
     if (items) {
       if (items.commentSorting === 'no-sort') {
         return;
