@@ -1,10 +1,10 @@
 chrome.runtime.onMessage.addListener(
-  function(request, sender, sendResponse) {
+  function (request, sender, sendResponse) {
     var issueNumber = document.getElementById('key-val').textContent;
     var issueTitle = document.getElementById('summary-val').textContent;
 
     if (request.action == 'get page details') {
-      sendResponse({title: issueTitle, issueNumber: issueNumber});
+      sendResponse({ title: issueTitle, issueNumber: issueNumber });
     }
 
     if (request.action == 'send e-mail') {
@@ -13,9 +13,9 @@ chrome.runtime.onMessage.addListener(
 
       // If we return right away, the window doesn't have time to start the mailto.
       // Half a second should be enough time.
-      setTimeout(function() {}, 500);
+      setTimeout(function () { }, 500);
     }
-});
+  });
 
 function setIssueActivitySortDirection(direction) {
   var sortLink = document.getElementsByClassName('issue-activity-sort-link')[0];
@@ -32,13 +32,13 @@ function setIssueActivitySortDirection(direction) {
     }
   }
 
-  setTimeout(function() { setIssueActivitySortDirection(direction); }, 100);
+  setTimeout(function () { setIssueActivitySortDirection(direction); }, 100);
 }
 
 chrome.storage.sync.get({
   commentSorting: 'no-sort'
-  },
-  function(items) {
+},
+  function (items) {
     if (items) {
       if (items.commentSorting === 'no-sort') {
         return;
@@ -47,3 +47,64 @@ chrome.storage.sync.get({
       }
     }
   });
+
+function isAlreadyLinked(node) {
+  while (node.parentNode) {
+    node = node.parentNode;
+    if (node.nodeName.toUpperCase() == 'A') {
+      return true;
+    }
+  }
+  return false;
+}
+
+function replace(originalNode, newNode) {
+  originalNode.parentNode.replaceChild(newNode, originalNode);
+}
+
+function getTextNodeIterator() {
+  return document.createNodeIterator(
+    document.body,
+    NodeFilter.SHOW_TEXT,
+    { acceptNode: function (node) { return NodeFilter.FILTER_ACCEPT; } },
+    false
+  );
+}
+
+function addServiceNowLinks() {
+  var serviceNowRegex = /((CMTSK|COM|PRB)[0-9]+)/g;
+
+  var iterator = getTextNodeIterator();
+  var textNode;
+  while ((textNode = iterator.nextNode()) != null) {
+    try {
+      if (!textNode.nodeValue || isAlreadyLinked(textNode) || !textNode.nodeValue.match(serviceNowRegex)) {
+        continue;
+      }
+
+      var span = document.createElement('span');
+      span.innerHTML = textNode.nodeValue.replace(
+        serviceNowRegex,
+        '<a href="https://agfa.service-now.com/textsearch.do?sysparm_search=$1">$1</a>');
+      replace(textNode, span);
+    } catch (err) {
+      console.log("Unknown error while adding ServiceNowLinks", err);
+    }
+  }
+}
+
+var contentNode = document.getElementById('content');
+if (contentNode) {
+  MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
+  var observer = new MutationObserver(function (mutations, observer) {
+    addServiceNowLinks();
+  });
+
+  observer.observe(contentNode, {
+    subtree: false,
+    childList: true,
+    attributes: false
+  });
+}
+
+addServiceNowLinks();
