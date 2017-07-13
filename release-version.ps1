@@ -16,7 +16,7 @@ Function Get-ScriptDirectory {
 
 Function SetVersion ($InputFile, $Version) {
     $versionPattern = [regex]'"version"\s*:\s*"[0-9]+\.[0-9]+\.[0-9]+"'
-    $newVersionText = '"version" = "' + $Version + '"'
+    $newVersionText = '"version" : "' + $Version + '"'
 
     $text = [System.IO.File]::ReadAllText($InputFile)
     $text = $versionPattern.Replace($text, $newVersionText)
@@ -26,7 +26,7 @@ Function SetVersion ($InputFile, $Version) {
 # ------------------------------------------------------------------------------
 
 $manifestFilePath = Join-Path (Get-ScriptDirectory) $manifestFile
-$branchName  = "release/$NewVersion"
+$branchName = "release/$NewVersion"
 
 Write-Host "Releasing version $NewVersion"
 $response = Read-Host "  Proceed (y/N)?"
