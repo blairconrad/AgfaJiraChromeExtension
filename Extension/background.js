@@ -20,9 +20,9 @@ function snagLink(pageDetails) {
 }
 
 // When the extension is installed or upgraded ...
-chrome.runtime.onInstalled.addListener(function() {
+chrome.runtime.onInstalled.addListener(function () {
   // Replace all rules ...
-  chrome.declarativeContent.onPageChanged.removeRules(undefined, function() {
+  chrome.declarativeContent.onPageChanged.removeRules(undefined, function () {
     // With a new rule ...
     chrome.declarativeContent.onPageChanged.addRules([
       {
@@ -30,28 +30,27 @@ chrome.runtime.onInstalled.addListener(function() {
         conditions: [
           new chrome.declarativeContent.PageStateMatcher({
             pageUrl: {
-              hostEquals: 'jiraprod.agfahealthcare.com',
-              pathPrefix: '/browse/IEI-'
+              urlMatches: 'jiraprod.agfahealthcare.com/browse/[A-Z][A-Z0-9]+-[0-9]+'
             },
           })
         ],
         // And shows the extension's page action.
-        actions: [ new chrome.declarativeContent.ShowPageAction() ]
+        actions: [new chrome.declarativeContent.ShowPageAction()]
       }
     ]);
   });
 });
 
-chrome.commands.onCommand.addListener(function(command) {
-  chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-    var tabId=tabs[0].id;
-    chrome.tabs.sendMessage(tabId, {action: 'get page details'}, function(response) {
-      if( command === "copy-title" ) {
+chrome.commands.onCommand.addListener(function (command) {
+  chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+    var tabId = tabs[0].id;
+    chrome.tabs.sendMessage(tabId, { action: 'get page details' }, function (response) {
+      if (command === "copy-title") {
         snagTitle(response);
-      } else if( command === "copy-link" ) {
+      } else if (command === "copy-link") {
         snagLink(response);
-      } else if( command === "send-email" ) {
-        chrome.tabs.sendMessage(tabId, {action: 'send e-mail'});
+      } else if (command === "send-email") {
+        chrome.tabs.sendMessage(tabId, { action: 'send e-mail' });
       }
     });
   });
