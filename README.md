@@ -8,6 +8,7 @@ below:
 
 * Email issue <kbd>Alt+S</kbd> (mnemonic: "send")
 * Copy Link as Markdown <kbd>Alt+L</kbd>
+* Copy Link as HTML <kbd>Alt+H</kbd>
 * Copy Title <kbd>Alt+T</kbd>
 
 You can always choose your own shortcuts at the bottom of the Chrome
