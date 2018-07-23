@@ -51,6 +51,12 @@
       },
       "description": "Copy link as markdown"
     },
+    "copy-html-link": {
+      "suggested_key": {
+        "default": "Alt+H"
+      },
+      "description": "Copy link as HTML"
+    },
     "send-email": {
       "suggested_key": {
         "default": "Alt+S"

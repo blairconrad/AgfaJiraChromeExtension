@@ -30,12 +30,26 @@ li:hover {
     background: url('url16.png') no-repeat 5px 3px transparent;
 }
 
+.action_htmlLink {
+    background: url('url16.png') no-repeat 5px 3px transparent;
+}
+
 .action_title {
     background: url('title16.png') no-repeat 5px 3px transparent;
 }
 
 .action_email {
     background: url('email16.png') no-repeat 5px 3px transparent;
+}
+
+/* 
+When copying the HTML, we get all the cascaded style sheets with it.
+Use the default font/font-size and bg color of Outlook.
+*/
+.html_link {
+    background-color: white;
+    font-family: Calibri, sans-serif;
+    font-size: 11pt;
 }
 
 textarea {

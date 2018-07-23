@@ -33,6 +33,12 @@ function onWindowLoad() {
         window.close();
       }
 
+      var htmlItem = document.getElementById('copy-html-link');
+      htmlItem.onclick = function(event) {
+        snagHtmlLink(response);
+        window.close();
+      }
+
       // We can't set window.location.href from within a popup's code,
       // so delegate to the code we've injected into the host page.
       var emailItem = document.getElementById('send-email');

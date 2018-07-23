@@ -19,6 +19,25 @@ function snagLink(pageDetails) {
   copyToClipboard('[' + pageDetails.issueNumber + ' - ' + pageDetails.title + '](http://jiraprod.agfahealthcare.com/browse/' + pageDetails.issueNumber + ')');
 }
 
+function snagHtmlLink(pageDetails) {
+  var anchor = document.getElementById('htmlLink');
+  anchor.setAttribute("href", "http://jiraprod.agfahealthcare.com/browse/" + pageDetails.issueNumber);
+  anchor.innerHTML = pageDetails.issueNumber + ' - ' + pageDetails.title;
+
+  var div = document.getElementById('htmlLinkDiv');
+  div.style.display = 'block';
+  
+  var range = document.createRange();
+  range.selectNodeContents(div);
+
+  var selection = window.getSelection();
+  selection.removeAllRanges();
+  selection.addRange( range );
+
+  document.execCommand('copy');
+  div.style.display = 'none';
+}
+
 // When the extension is installed or upgraded ...
 chrome.runtime.onInstalled.addListener(function () {
   // Replace all rules ...
@@ -49,8 +68,10 @@ chrome.commands.onCommand.addListener(function (command) {
         snagTitle(response);
       } else if (command === "copy-link") {
         snagLink(response);
-      } else if (command === "send-email") {
-        chrome.tabs.sendMessage(tabId, { action: 'send e-mail' });
+      } else if( command === "copy-html-link" ) {
+        snagHtmlLink(response);
+      } else if( command === "send-email" ) {
+        chrome.tabs.sendMessage(tabId, {action: 'send e-mail'});
       }
     });
   });
