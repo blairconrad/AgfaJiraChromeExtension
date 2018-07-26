@@ -1,5 +1,5 @@
 [CmdletBinding()]
-Param ( 
+Param (
     [string]$NewVersion = $(throw "NewVersion is required"),
     [string]$RemoteName = "upstream"
 )
@@ -24,9 +24,13 @@ Function SetVersion ($InputFile, $Version) {
 }
 
 # ------------------------------------------------------------------------------
+$ErrorActionPreference = "Stop"
 
-$manifestFilePath = Join-Path (Get-ScriptDirectory) $manifestFile
-$branchName = "release/$NewVersion"
+$allRemotes = git remote
+
+if (! $allRemotes.Contains($RemoteName)) {
+    throw "'$RemoteName' is not a valid remote name. Aborting."
+}
 
 Write-Host "Releasing version $NewVersion"
 $response = Read-Host "  Proceed (y/N)?"
@@ -35,6 +39,13 @@ Switch ($response) {
     n { Write-Host "Update cancelled."; return }
     Default { Write-Host "Unknown response '$response'. Aborting."; return }
 }
+
+git fetch $RemoteName master
+git checkout master
+git reset --hard $RemoteName/master
+
+$manifestFilePath = Join-Path (Get-ScriptDirectory) $manifestFile
+$branchName = "release/$NewVersion"
 
 git checkout --quiet -b  $branchName master
 SetVersion $manifestFilePath $NewVersion
