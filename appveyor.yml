@@ -1,15 +1,6 @@
 version: '{build}'
 
-skip_non_tags: true
-
-environment:
-  BUILD: $(APPVEYOR_BUILD_NUMBER)
-  CLIENT_ID:
-    secure: SSl4FZm2gI7pdZ2EKVB7eWS7OooYHpB9gZlNrSxQcdLwc2quwY3JmWcHpPNUoJWsWHj+onegAs0Ba6kwrUVCM0nQ1Phj1PoTpp/1p2nsSYo=
-  CLIENT_SECRET:
-    secure: W5hr3nN62YohVwuNrwSxmd4gIcNKI4kRA0Ea1S86/G4=
-  REFRESH_TOKEN:
-    secure: RtuQDNEf1iNOKSe5sqRR2lSpuv7j0zkXCcCbaz31B8r/ngFWG2Gdjn1BaHm+PsoM
+skip_non_tags: false
 
 build_script:
     - ps: ./build.ps1
