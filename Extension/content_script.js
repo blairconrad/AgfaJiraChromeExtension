@@ -93,18 +93,46 @@ function addServiceNowLinks() {
   }
 }
 
+function formatDatesBetter() {
+  var allLivestamps = document.getElementsByClassName('livestamp');
+  for (var i = allLivestamps.length - 1; i >= 0; --i) {
+    var livestamp = allLivestamps[i];
+    try {
+      // datetime has looked like "2020-12-15T14:22:57-0500", so drop
+      // the seconds and timezone and make the T a space, for readability.
+      var newText = livestamp.attributes['datetime'].textContent
+        .substring(0, 16)
+        .replace('T', ' ');
+      if (newText != livestamp.innerHTML) {
+        var span = document.createElement('span');
+        span.innerHTML = newText;
+        replace(livestamp, span);
+      }
+    } catch (err) {
+      console.log('Unknown error while formatting dates', err);
+    }
+  }
+}
+
 var contentNode = document.getElementById('content');
 if (contentNode) {
   MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
-  var observer = new MutationObserver(function (mutations, observer) {
+  var observer = new MutationObserver(function (mutations, theObserver) {
+    theObserver.disconnect();
+    theObserver.takeRecords();
     addServiceNowLinks();
+    formatDatesBetter();
+    theObserver.observe(document, {
+      subtree: true,
+      childList: true,
+    });
   });
 
   observer.observe(contentNode, {
-    subtree: false,
+    subtree: true,
     childList: true,
-    attributes: false
   });
 }
 
 addServiceNowLinks();
+formatDatesBetter();
