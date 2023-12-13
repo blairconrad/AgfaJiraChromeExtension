@@ -2,6 +2,8 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+const urlMatch = 'jiraprod.agfahealthcare.com/browse/[A-Z][A-Z0-9]+-[0-9]+';
+
 function copyToClipboard(text) {
   var ta = document.getElementById('ta');
   ta.style.display = 'block';
@@ -41,23 +43,43 @@ function snagHtmlLink(pageDetails) {
 // When the extension is installed or upgraded ...
 chrome.runtime.onInstalled.addListener(function () {
   // Replace all rules ...
-  chrome.declarativeContent.onPageChanged.removeRules(undefined, function () {
-    // With a new rule ...
-    chrome.declarativeContent.onPageChanged.addRules([
-      {
-        // That fires when a page's URL has the right host
-        conditions: [
-          new chrome.declarativeContent.PageStateMatcher({
-            pageUrl: {
-              urlMatches: 'jiraprod.agfahealthcare.com/browse/[A-Z][A-Z0-9]+-[0-9]+'
-            },
-          })
-        ],
-        // And shows the extension's page action.
-        actions: [new chrome.declarativeContent.ShowPageAction()]
-      }
-    ]);
-  });
+  if (chrome.declarativeContent) {
+    chrome.declarativeContent.onPageChanged.removeRules(undefined, function () {
+      // With a new rule ...
+      chrome.declarativeContent.onPageChanged.addRules([
+        {
+          // That fires when a page's URL has the right host
+          conditions: [
+            new chrome.declarativeContent.PageStateMatcher({
+              pageUrl: {
+                urlMatches: urlMatch
+              },
+            })
+          ],
+          // And shows the extension's page action.
+          actions: [new chrome.declarativeContent.ShowPageAction()]
+        }
+      ]);
+    });
+  }
+});
+
+// for Firefox, updating a tab
+chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) { 
+  if (changeInfo.status === 'complete' && tab.url.match(urlMatch)) {
+    chrome.pageAction.show(tabId);
+  } else if (changeInfo.status === 'complete') {
+    chrome.pageAction.hide(tabId);
+  }
+});
+
+// for Firefox, creating a new tab
+chrome.tabs.onCreated.addListener(function(tab) {
+  if (tab.url && tab.url.match(urlMatch)) {
+    chrome.pageAction.show(tab.id);
+  } else if (tab.url) {
+    chrome.pageAction.hide(tab.id);
+  }
 });
 
 chrome.commands.onCommand.addListener(function (command) {
