@@ -66,7 +66,7 @@ chrome.runtime.onInstalled.addListener(function () {
 
 // for Firefox, updating a tab
 chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) { 
-  if (changeInfo.status === 'complete' && tab.url.match(urlMatch)) {
+  if (changeInfo.status === 'complete' && tab && tab.url && tab.url.match(urlMatch)) {
     chrome.pageAction.show(tabId);
   } else if (changeInfo.status === 'complete') {
     chrome.pageAction.hide(tabId);
@@ -75,7 +75,7 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
 
 // for Firefox, creating a new tab
 chrome.tabs.onCreated.addListener(function(tab) {
-  if (tab.url && tab.url.match(urlMatch)) {
+  if (tab.url && tab && tab.url && tab.url.match(urlMatch)) {
     chrome.pageAction.show(tab.id);
   } else if (tab.url) {
     chrome.pageAction.hide(tab.id);
