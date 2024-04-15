@@ -24,7 +24,12 @@ function setIssueActivitySortDirection(direction) {
     if (dataOrder) {
       if (dataOrder == direction) { // we're sorting in the wrong order
         // toggle the sort order (forces a page reload)
-        window.location.replace(sortLink.getAttribute('href'));
+        var newLocation = sortLink.getAttribute('data-ajax');
+        if (newLocation) {
+          window.location.replace(newLocation);
+        } else {
+          console.log('Could not find data-ajax attribute on sort link. Cannot change sort order.');
+        }
       }
 
       // the sort order will stick for the session, so no need to continue checking
