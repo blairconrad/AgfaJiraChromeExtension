@@ -6,10 +6,6 @@ Param (
 
 # ------------------------------------------------------------------------------
 
-$manifestFile = "Extension/manifest.json"
-
-# ------------------------------------------------------------------------------
-
 Function Get-ScriptDirectory {
     Split-Path $MyInvocation.ScriptName
 }
@@ -44,12 +40,17 @@ git fetch $RemoteName master
 git checkout master
 git reset --hard $RemoteName/master
 
-$manifestFilePath = Join-Path (Get-ScriptDirectory) $manifestFile
 $branchName = "release/$NewVersion"
 
 git checkout --quiet -b  $branchName master
-SetVersion $manifestFilePath $NewVersion
-git commit --quiet --message "Set version to $NewVersion" $manifestFilePath
+
+'chrome', 'firefox' | ForEach-Object {
+    $manifestFilePath = Join-Path (Get-ScriptDirectory) "Extension/manifest_${_}.json"
+    SetVersion $manifestFilePath $NewVersion
+    git add $manifestFilePath
+}
+
+git commit --quiet --message "Set version to $NewVersion"
 git checkout --quiet master
 git merge --quiet --no-ff $branchName
 git branch --delete $branchName
