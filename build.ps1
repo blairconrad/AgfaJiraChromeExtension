@@ -1,3 +1,7 @@
+Function Get-Version {
+    (git describe --tags) -replace '-(\d+)-.*', '.$1'
+}
+
 Filter ConvertTo-Slug {
     (
         $_ -replace '\s+', '-' `
@@ -10,7 +14,9 @@ Filter ConvertTo-Slug {
 
 Filter Build-Extension {
     $manifestFile = $_
-    $name = Get-Content $manifestFile | ConvertFrom-Json | Select-Object -ExpandProperty name | ConvertTo-Slug
+    $manifest = Get-Content $manifestFile | ConvertFrom-Json
+
+    $name = $manifest | Select-Object -ExpandProperty name | ConvertTo-Slug
 
     $browser = $manifestFile.Name -replace 'manifest_(.+)\.json', '$1'
     $buildDirectory = "artifacts/build/${name}-${browser}"
@@ -19,8 +25,9 @@ Filter Build-Extension {
     }
 
     Copy-Item -Recurse Extension $buildDirectory
-    Copy-Item $manifestFile (Join-Path $buildDirectory "manifest.json")
     Remove-Item (Join-Path $buildDirectory manifest_*.json)
+    $manifest.version = Get-Version
+    Out-File -Encoding utf8 -InputObject ($manifest | ConvertTo-Json -Depth 10) -FilePath "$buildDirectory/manifest.json"
 
     New-Item -ItemType Directory -Path "artifacts/output" -Force | Out-Null
     Compress-Archive -Force -DestinationPath "artifacts/output/${name}-${browser}.zip" -Path "${buildDirectory}/*"
