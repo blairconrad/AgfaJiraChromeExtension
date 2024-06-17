@@ -44,10 +44,9 @@ $branchName = "release/$NewVersion"
 
 git checkout --quiet -b  $branchName master
 
-'chrome', 'firefox' | ForEach-Object {
-    $manifestFilePath = Join-Path (Get-ScriptDirectory) "Extension/manifest_${_}.json"
-    SetVersion $manifestFilePath $NewVersion
-    git add $manifestFilePath
+Get-ChildItem "Extension/manifest_*.json" | ForEach-Object {
+    SetVersion $_ $NewVersion
+    git add $_
 }
 
 git commit --quiet --message "Set version to $NewVersion"
