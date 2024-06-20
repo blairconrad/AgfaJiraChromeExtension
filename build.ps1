@@ -26,7 +26,7 @@ Filter Build-Extension {
 
     Copy-Item -Recurse Extension $buildDirectory
     Remove-Item (Join-Path $buildDirectory manifest_*.json)
-    $manifest.version = Get-Version
+    $manifest | Add-Member -NotePropertyName 'version' -NotePropertyValue (Get-Version)
     Out-File -Encoding utf8 -InputObject ($manifest | ConvertTo-Json -Depth 10) -FilePath "$buildDirectory/manifest.json"
 
     New-Item -ItemType Directory -Path "artifacts/output" -Force | Out-Null
